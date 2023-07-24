@@ -55,7 +55,8 @@ class SplashLevel extends Phaser.Scene {
     });
 
     /* START PRELOAD ITEMS */
-
+this.load.baseURL = "https://griffin-zielke.github.io/xsnake-gamex/";
+    this.load.image("SnakeSkin","static/assets/SnakeSkin.png")
     /* END PRELOAD ITEMS */
   }
   private logo: Phaser.GameObjects.Image;
@@ -86,7 +87,7 @@ class SplashLevel extends Phaser.Scene {
     });
 
     setTimeout(() => {
-      //this.scene.start('MainLevel');
+      this.scene.start('MainLevel');
     }, 2000);
   }
 
@@ -102,9 +103,9 @@ class MainLevel extends Phaser.Scene {
 
   preload() {}
 
-  create() {}
+  create() {this.physics.add.sprite(100,100,"SnakeSkin")}
 
-  update() {}
+  update() {this.camera.main.background,"#FFF"}
 }
 
 /* -------------------------------------------------------------------------- */
