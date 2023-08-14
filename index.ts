@@ -114,29 +114,31 @@ class MainLevel extends Phaser.Scene {
 
   update() {
     this.cameras.main.backgroundColor, '#FFF';
-
+    this.checkBoundary();
     this.moveSprite();
   }
   moveSprite() {
     if (this.cursorKeys.up.isDown) {
-      this.SnakeSkin.y -= 5; // will move your sprite right
+      this.SnakeSkin.y -= 4; // will move your sprite right
     }
 
-    if (this.cursorKeys.down.isDown) {
-      this.SnakeSkin.y += 5; // will move your sprite right
+    else if (this.cursorKeys.down.isDown) {
+      this.SnakeSkin.y += 4; // will move your sprite right
     }
 
-    if (this.cursorKeys.left.isDown) {
-      this.SnakeSkin.x -= 5; // will move your sprite right
+    else if (this.cursorKeys.left.isDown) {
+      this.SnakeSkin.x -= 4; // will move your sprite right
 
     }
 
-    if (this.cursorKeys.right.isDown) {
-      this.SnakeSkin.x += 5; // will move your sprite right
+    else if (this.cursorKeys.right.isDown) {
+      this.SnakeSkin.x += 4; // will move your sprite right
     }
   }
+
+  
   checkBoundary() {
-    if (this.SnakeSkin.x >= 400) {
+    if (this.SnakeSkin.x >= 384) {
        this.scene.start('MainLevel');
     }
 
@@ -144,15 +146,12 @@ class MainLevel extends Phaser.Scene {
       this.scene.start('MainLevel');    
     }
 
-    if (this.SnakeSkin.y >= 400) {
+    if (this.SnakeSkin.y >= 384) {
       this.scene.start('MainLevel');    
     }
 
     if (this.SnakeSkin.y <= 0) {
       this.scene.start('MainLevel');    
-    }
-    if (this.SnakeSkin.x >= 400) {
-      this.scene.start('MainLevel');  
     }
 }
 }
@@ -163,8 +162,8 @@ class MainLevel extends Phaser.Scene {
 
 const config = {
   type: Phaser.AUTO,
-  width: 400,
-  height: 400,
+  width: 384,
+  height: 384,
   backgroundColor: '#0x000',
   physics: {
     default: 'arcade',
