@@ -144,14 +144,14 @@ class MainLevel extends Phaser.Scene {
       this.scene.start('MainLevel');    
     }
 
-    if (this.SnakeSkin.y >= 600) {
+    if (this.SnakeSkin.y >= 400) {
       this.scene.start('MainLevel');    
     }
 
     if (this.SnakeSkin.y <= 0) {
       this.scene.start('MainLevel');    
     }
-    if (this.SnakeSkin.x >= 800) {
+    if (this.SnakeSkin.x >= 400) {
       this.scene.start('MainLevel');  
     }
 }
