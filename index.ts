@@ -36,8 +36,6 @@ class SplashLevel extends Phaser.Scene {
   }
 
   preload() {
-
-
     const logo = this.add.image(200, 100, 'logo');
     logo.setScale(1.3);
     this.logo = logo;
@@ -55,8 +53,8 @@ class SplashLevel extends Phaser.Scene {
     });
 
     /* START PRELOAD ITEMS */
-this.load.baseURL = "https://griffin-zielke.github.io/xsnake-gamex/";
-    this.load.image("SnakeSkin","static/assets/SnakeSkin.png")
+    this.load.baseURL = 'https://griffin-zielke.github.io/xsnake-gamex/';
+    this.load.image('SnakeSkin', 'static/assets/SnakeSkin.png');
     /* END PRELOAD ITEMS */
   }
   private logo: Phaser.GameObjects.Image;
@@ -64,14 +62,14 @@ this.load.baseURL = "https://griffin-zielke.github.io/xsnake-gamex/";
   private companyLine2: Phaser.GameObjects.BitmapText;
 
   create() {
-    this.cameras.main.setBackgroundColor('#006298')
-//    this.tweens.add({
-//      targets: this.logo, //your image that must spin
-//      rotation: 2 * Math.PI, //rotation value must be radian
-//     ease: 'Bounce',
-//      delay: 600,
-//      duration: 600, //duration is in milliseconds
-//    });
+    this.cameras.main.setBackgroundColor('#006298');
+    //    this.tweens.add({
+    //      targets: this.logo, //your image that must spin
+    //      rotation: 2 * Math.PI, //rotation value must be radian
+    //     ease: 'Bounce',
+    //      delay: 600,
+    //      duration: 600, //duration is in milliseconds
+    //    });
 
     this.tweens.add({
       targets: this.companyLine1, //your image that must spin
@@ -103,9 +101,60 @@ class MainLevel extends Phaser.Scene {
 
   preload() {}
 
-  create() {this.physics.add.sprite(100,100,"SnakeSkin")}
+  create() {
+    this.physics.world.setBoundsCollision(true,true,true,true)
+    this.physics.world.setBounds(0,0,400,400)
+    const SnakeSkin = this.physics.add.sprite(100, 100, 'SnakeSkin');
+    this.SnakeSkin = SnakeSkin;
+    const cursorKeys = this.input.keyboard.createCursorKeys();
+    this.cursorKeys = cursorKeys;
+  }
+  private cursorKeys: Phaser.Types.Input.Keyboard.CursorKeys;
+  private SnakeSkin: Phaser.GameObjects.Sprite;
 
-  update() {this.camera.main.background,"#FFF"}
+  update() {
+    this.cameras.main.backgroundColor, '#FFF';
+
+    this.moveSprite();
+  }
+  moveSprite() {
+    if (this.cursorKeys.up.isDown) {
+      this.SnakeSkin.y -= 5; // will move your sprite right
+    }
+
+    if (this.cursorKeys.down.isDown) {
+      this.SnakeSkin.y += 5; // will move your sprite right
+    }
+
+    if (this.cursorKeys.left.isDown) {
+      this.SnakeSkin.x -= 5; // will move your sprite right
+
+    }
+
+    if (this.cursorKeys.right.isDown) {
+      this.SnakeSkin.x += 5; // will move your sprite right
+    }
+  }
+  checkBoundary() {
+    if (this.SnakeSkin.x >= 400) {
+       this.scene.start('MainLevel');
+    }
+
+    if (this.SnakeSkin.x <= 0) {
+      this.scene.start('MainLevel');    
+    }
+
+    if (this.SnakeSkin.y >= 600) {
+      this.scene.start('MainLevel');    
+    }
+
+    if (this.SnakeSkin.y <= 0) {
+      this.scene.start('MainLevel');    
+    }
+    if (this.SnakeSkin.x >= 800) {
+      this.scene.start('MainLevel');  
+    }
+}
 }
 
 /* -------------------------------------------------------------------------- */
