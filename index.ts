@@ -119,15 +119,15 @@ class MainLevel extends Phaser.Scene {
   }
   moveSprite() {
     if (this.cursorKeys.up.isDown) {
-      this.SnakeSkin.y -= 4; // will move your sprite right
+      this.SnakeSkin.y -= 4; // will move your sprite up
     }
 
     else if (this.cursorKeys.down.isDown) {
-      this.SnakeSkin.y += 4; // will move your sprite right
+      this.SnakeSkin.y += 4; // will move your sprite down
     }
 
     else if (this.cursorKeys.left.isDown) {
-      this.SnakeSkin.x -= 4; // will move your sprite right
+      this.SnakeSkin.x -= 4; // will move your sprite left
 
     }
 
