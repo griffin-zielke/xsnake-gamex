@@ -105,14 +105,26 @@ class MainLevel extends Phaser.Scene {
   create() {
     this.physics.world.setBoundsCollision(true, true, true, true);
     this.physics.world.setBounds(0, 0, 400, 400);
-    const SnakeSkin = this.physics.add.sprite(100, 100, 'SnakeSkin');
-    this.SnakeSkin = SnakeSkin;
-    const Apple = this.physics.add.sprite(300, 300, 'Apple');
+
+    //const SnakeSkin = this.physics.add.sprite(100, 100, 'SnakeSkin');
+    const Snake = this.physics.add.group({
+      key: 'SnakeSkin',
+      setXY: { x: 100, y: 100 },
+    });
+    console.log(Snake.getChildren());
+
+    this.Snake = Snake;
+
+    const Apple = this.physics.add.sprite(
+      Phaser.Math.Between(16, 368),
+      Phaser.Math.Between(16, 368),
+      'Apple'
+    );
     this.Apple = Apple;
     const cursorKeys = this.input.keyboard.createCursorKeys();
     this.cursorKeys = cursorKeys;
     this.physics.add.collider(
-      this.SnakeSkin,
+      this.Snake,
       this.Apple,
       this.handleCollision,
       null,
@@ -121,7 +133,7 @@ class MainLevel extends Phaser.Scene {
   }
 
   private cursorKeys: Phaser.Types.Input.Keyboard.CursorKeys;
-  private SnakeSkin: Phaser.GameObjects.Sprite;
+  private Snake: Phaser.Physics.Arcade.Group;
   private Apple: Phaser.GameObjects.Sprite;
   private currentDirection: 'UP' | 'DOWN' | 'LEFT' | 'RIGHT' | null = null;
 
@@ -133,52 +145,61 @@ class MainLevel extends Phaser.Scene {
 
   moveSprite() {
     if (this.cursorKeys.up.isDown && this.currentDirection !== 'DOWN') {
-        this.currentDirection = 'UP';
+      this.currentDirection = 'UP';
     } else if (this.cursorKeys.down.isDown && this.currentDirection !== 'UP') {
-        this.currentDirection = 'DOWN';
-    } else if (this.cursorKeys.left.isDown && this.currentDirection !== 'RIGHT') {
-        this.currentDirection = 'LEFT';
-    } else if (this.cursorKeys.right.isDown && this.currentDirection !== 'LEFT') {
-        this.currentDirection = 'RIGHT';
+      this.currentDirection = 'DOWN';
+    } else if (
+      this.cursorKeys.left.isDown &&
+      this.currentDirection !== 'RIGHT'
+    ) {
+      this.currentDirection = 'LEFT';
+    } else if (
+      this.cursorKeys.right.isDown &&
+      this.currentDirection !== 'LEFT'
+    ) {
+      this.currentDirection = 'RIGHT';
     }
 
     switch (this.currentDirection) {
-        case 'UP':
-            this.SnakeSkin.y -= 4; // will move your sprite up
-            break;
-        case 'DOWN':
-            this.SnakeSkin.y += 4; // will move your sprite down
-            break;
-        case 'LEFT':
-            this.SnakeSkin.x -= 4; // will move your sprite left
-            break;
-        case 'RIGHT':
-            this.SnakeSkin.x += 4; // will move your sprite right
-            break;
+      case 'UP':
+        this.Snake.getFirst(true).y -= 4; // will move your sprite up
+        break;
+      case 'DOWN':
+        this.Snake.getFirst(true).y += 4; // will move your sprite down
+        break;
+      case 'LEFT':
+        this.Snake.getFirst(true).x -= 4; // will move your sprite left
+        break;
+      case 'RIGHT':
+        this.Snake.getFirst(true).x += 4; // will move your sprite right
+        break;
     }
-}
-
+  }
 
   handleCollision(sprite1, sprite2) {
-    console.log('Collision detected between', sprite1, 'and', sprite2);
     this.Apple.setX(Phaser.Math.Between(16, 368));
     this.Apple.setY(Phaser.Math.Between(16, 368));
+
+    let x = this.Snake.getFirst(true).x;
+    let y = this.Snake.getFirst(true).y;
+    const snakeBody = this.physics.add.sprite(x, y, 'SnakeSkin');
+    this.Snake.add(snakeBody);
   }
 
   checkBoundary() {
-    if (this.SnakeSkin.x >= 384) {
+    if (this.Snake.getFirst(true).x >= 384) {
       this.scene.start('MainLevel');
     }
 
-    if (this.SnakeSkin.x <= 0) {
+    if (this.Snake.getFirst(true).x <= 0) {
       this.scene.start('MainLevel');
     }
 
-    if (this.SnakeSkin.y >= 384) {
+    if (this.Snake.getFirst(true).y >= 384) {
       this.scene.start('MainLevel');
     }
 
-    if (this.SnakeSkin.y <= 0) {
+    if (this.Snake.getFirst(true).y <= 0) {
       this.scene.start('MainLevel');
     }
   }
