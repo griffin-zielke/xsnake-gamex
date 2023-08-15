@@ -132,31 +132,32 @@ class MainLevel extends Phaser.Scene {
   }
 
   moveSprite() {
-    if (this.cursorKeys.up.isDown) {
-      this.currentDirection = 'UP';
-    } else if (this.cursorKeys.down.isDown) {
-      this.currentDirection = 'DOWN';
-    } else if (this.cursorKeys.left.isDown) {
-      this.currentDirection = 'LEFT';
-    } else if (this.cursorKeys.right.isDown) {
-      this.currentDirection = 'RIGHT';
+    if (this.cursorKeys.up.isDown && this.currentDirection !== 'DOWN') {
+        this.currentDirection = 'UP';
+    } else if (this.cursorKeys.down.isDown && this.currentDirection !== 'UP') {
+        this.currentDirection = 'DOWN';
+    } else if (this.cursorKeys.left.isDown && this.currentDirection !== 'RIGHT') {
+        this.currentDirection = 'LEFT';
+    } else if (this.cursorKeys.right.isDown && this.currentDirection !== 'LEFT') {
+        this.currentDirection = 'RIGHT';
     }
 
     switch (this.currentDirection) {
-      case 'UP':
-        this.SnakeSkin.y -= 4; // will move your sprite up
-        break;
-      case 'DOWN':
-        this.SnakeSkin.y += 4; // will move your sprite down
-        break;
-      case 'LEFT':
-        this.SnakeSkin.x -= 4; // will move your sprite left
-        break;
-      case 'RIGHT':
-        this.SnakeSkin.x += 4; // will move your sprite right
-        break;
+        case 'UP':
+            this.SnakeSkin.y -= 4; // will move your sprite up
+            break;
+        case 'DOWN':
+            this.SnakeSkin.y += 4; // will move your sprite down
+            break;
+        case 'LEFT':
+            this.SnakeSkin.x -= 4; // will move your sprite left
+            break;
+        case 'RIGHT':
+            this.SnakeSkin.x += 4; // will move your sprite right
+            break;
     }
-  }
+}
+
 
   handleCollision(sprite1, sprite2) {
     console.log('Collision detected between', sprite1, 'and', sprite2);
