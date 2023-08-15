@@ -55,6 +55,7 @@ class SplashLevel extends Phaser.Scene {
     /* START PRELOAD ITEMS */
     this.load.baseURL = 'https://griffin-zielke.github.io/xsnake-gamex/';
     this.load.image('SnakeSkin', 'static/assets/SnakeSkin.png');
+    this.load.image('Apple', 'static/assets/Apple.png');
     /* END PRELOAD ITEMS */
   }
   private logo: Phaser.GameObjects.Image;
@@ -102,58 +103,84 @@ class MainLevel extends Phaser.Scene {
   preload() {}
 
   create() {
-    this.physics.world.setBoundsCollision(true,true,true,true)
-    this.physics.world.setBounds(0,0,400,400)
+    this.physics.world.setBoundsCollision(true, true, true, true);
+    this.physics.world.setBounds(0, 0, 400, 400);
     const SnakeSkin = this.physics.add.sprite(100, 100, 'SnakeSkin');
     this.SnakeSkin = SnakeSkin;
+    const Apple = this.physics.add.sprite(300, 300, 'Apple');
+    this.Apple = Apple;
     const cursorKeys = this.input.keyboard.createCursorKeys();
     this.cursorKeys = cursorKeys;
+    this.physics.add.collider(
+      this.SnakeSkin,
+      this.Apple,
+      this.handleCollision,
+      null,
+      this
+    );
   }
+
   private cursorKeys: Phaser.Types.Input.Keyboard.CursorKeys;
   private SnakeSkin: Phaser.GameObjects.Sprite;
+  private Apple: Phaser.GameObjects.Sprite;
+  private currentDirection: 'UP' | 'DOWN' | 'LEFT' | 'RIGHT' | null = null;
 
   update() {
     this.cameras.main.backgroundColor, '#FFF';
     this.checkBoundary();
     this.moveSprite();
   }
+
   moveSprite() {
     if (this.cursorKeys.up.isDown) {
-      this.SnakeSkin.y -= 4; // will move your sprite up
+      this.currentDirection = 'UP';
+    } else if (this.cursorKeys.down.isDown) {
+      this.currentDirection = 'DOWN';
+    } else if (this.cursorKeys.left.isDown) {
+      this.currentDirection = 'LEFT';
+    } else if (this.cursorKeys.right.isDown) {
+      this.currentDirection = 'RIGHT';
     }
 
-    else if (this.cursorKeys.down.isDown) {
-      this.SnakeSkin.y += 4; // will move your sprite down
-    }
-
-    else if (this.cursorKeys.left.isDown) {
-      this.SnakeSkin.x -= 4; // will move your sprite left
-
-    }
-
-    else if (this.cursorKeys.right.isDown) {
-      this.SnakeSkin.x += 4; // will move your sprite right
+    switch (this.currentDirection) {
+      case 'UP':
+        this.SnakeSkin.y -= 4; // will move your sprite up
+        break;
+      case 'DOWN':
+        this.SnakeSkin.y += 4; // will move your sprite down
+        break;
+      case 'LEFT':
+        this.SnakeSkin.x -= 4; // will move your sprite left
+        break;
+      case 'RIGHT':
+        this.SnakeSkin.x += 4; // will move your sprite right
+        break;
     }
   }
 
-  
+  handleCollision(sprite1, sprite2) {
+    console.log('Collision detected between', sprite1, 'and', sprite2);
+    this.Apple.setX(Phaser.Math.Between(16, 368));
+    this.Apple.setY(Phaser.Math.Between(16, 368));
+  }
+
   checkBoundary() {
     if (this.SnakeSkin.x >= 384) {
-       this.scene.start('MainLevel');
+      this.scene.start('MainLevel');
     }
 
     if (this.SnakeSkin.x <= 0) {
-      this.scene.start('MainLevel');    
+      this.scene.start('MainLevel');
     }
 
     if (this.SnakeSkin.y >= 384) {
-      this.scene.start('MainLevel');    
+      this.scene.start('MainLevel');
     }
 
     if (this.SnakeSkin.y <= 0) {
-      this.scene.start('MainLevel');    
+      this.scene.start('MainLevel');
     }
-}
+  }
 }
 
 /* -------------------------------------------------------------------------- */
