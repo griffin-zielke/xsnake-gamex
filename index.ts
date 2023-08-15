@@ -160,6 +160,11 @@ class MainLevel extends Phaser.Scene {
       this.currentDirection = 'RIGHT';
     }
 
+    let previousPoint = new Phaser.Math.Vector2(
+      this.Snake.getFirst(true).x,
+      this.Snake.getFirst(true).y
+    );
+
     switch (this.currentDirection) {
       case 'UP':
         this.Snake.getFirst(true).y -= 4; // will move your sprite up
@@ -174,6 +179,18 @@ class MainLevel extends Phaser.Scene {
         this.Snake.getFirst(true).x += 4; // will move your sprite right
         break;
     }
+
+    let index = 0;
+    this.Snake.children.iterate((Snake: Phaser.GameObjects.Sprite) => {
+      if (index != 0) {
+        var snakePosition = new Phaser.Math.Vector2(Snake.x, Snake.y);
+        Snake.x = previousPoint.x;
+        Snake.y = previousPoint.y;
+        previousPoint = snakePosition;
+      }
+      index++;
+      return true;
+    });
   }
 
   handleCollision(sprite1, sprite2) {
